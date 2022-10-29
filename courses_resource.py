@@ -1,6 +1,10 @@
 import pymysql
 import os
 from flask import Flask, request, render_template, g, redirect, Response, session
+
+###Define default LIMIT and OFFSET
+LIMIT = 50
+OFFSET = 0
 class CourseResource:
     @classmethod
     def __init__(self):
@@ -34,11 +38,13 @@ class CourseResource:
         return records
 
     @staticmethod
-    def get_course_id(course_id):
-        sql = "SELECT * FROM courseswork_6156.Courses where Course_id=%s";
+    def get_course_name(course_name):
+        sql = "SELECT * FROM courseswork_6156.Courses where Course_Name=%s LIMIT %s OFFSET %s";
+        course_name = course_name.strip()
         conn = CourseResource._get_connection()
         cur = conn.cursor()
-        res = cur.execute(sql, args = course_id)
+        limit, offset = LIMIT, OFFSET
+        res = cur.execute(sql, args = (course_name, limit, offset))
         records = cur.fetchall()
         #result = cur.fetchone()
         return records
@@ -47,6 +53,7 @@ class CourseResource:
     def add_course(course_name, department, introduction = "NA"):
         if not (course_name and department):
             return False
+        course_name, department = course_name.strip(), department.strip()
         conn = CourseResource._get_connection()
         cur = conn.cursor()
         #####judge if the course exists#####
@@ -56,7 +63,6 @@ class CourseResource:
         """
         cur.execute(sql1, args=(course_name, department))
         records = cur.fetchall()
-        print(records)
         if len(records) >= 1:
             return False
         #####################################
@@ -69,10 +75,11 @@ class CourseResource:
         return True if result == 1 else False
 
     @staticmethod
-    def add_student_preference(uni, course_id, timezone = "NA", dept = "NA", message = "NA"):
-        if not (uni and course_id) or not (timezone != "NA" or dept != "NA" or message != "NA"):
-            return False
+    def add_student_preference(uni, course_id, timezone, dept, message):
+        if not (uni and course_id and timezone and dept and message):
+            return False, "Please fill in all blanks!"
         conn = CourseResource._get_connection()
+        uni, course_id, timezone, dept, message = uni.strip(), course_id.strip(), timezone.strip(), dept.strip(), message.strip()
         cur = conn.cursor()
         #####judge if the preference exists#####
         sql1 = """
@@ -82,25 +89,28 @@ class CourseResource:
         cur.execute(sql1, args=(uni, int(course_id)))
         records = cur.fetchall()
         if len(records) >= 1:
-            return False
+            return False, "The course has been created!"
         ########################################
         sql2 = """
              insert into courseswork_6156.student_preferences 
              (uni, Course_id, prefered_Dept, prefered_Timezone, prefered_message)
              values (%s, %s, %s, %s, %s);
             """
-        cur.execute(sql2, args=(uni, int(course_id), dept, timezone, message))
-        result = cur.rowcount
-        return True if result == 1 else False
+        try:
+            cur.execute(sql2, args=(uni, int(course_id), dept, timezone, message))
+            return True, "Success"
+        except:
+            return False, "The course does not exist, please create course first!"
 
     @staticmethod
-    def edit_student_preference(uni, course_id, timezone = "NA", dept = "NA", message = "NA"):
-        if not (course_id and uni) or not (timezone != "NA" or dept != "NA" or message != "NA"):
+    def edit_student_preference(uni, course_id, timezone, dept, message):
+        if not (uni and course_id and timezone and dept and message):
             return False
         sql1 = """
         SELECT * FROM courseswork_6156.student_preferences where Course_id = %s and uni = %s
         """
         conn = CourseResource._get_connection()
+        uni, course_id, timezone, dept, message = uni.strip(), course_id.strip(), timezone.strip(), dept.strip(), message.strip()
         cur = conn.cursor()
         res = cur.execute(sql1, args=(course_id, uni))
         records = cur.fetchall()
@@ -116,23 +126,13 @@ class CourseResource:
 
 
     @staticmethod
-    def get_course_preference_by_id_and_uni(course_id, uni):
-        sql = "SELECT * FROM courseswork_6156.student_preferences where Course_id = %s and uni = %s";
-        conn = CourseResource._get_connection()
-        cur = conn.cursor()
-        key = (course_id, uni)
-        res = cur.execute(sql, args=key)
-        records = cur.fetchall()
-        # result = cur.fetchone()
-        return records
-
-    @staticmethod
     def get_course_preference_by_uni(uni):
-        sql = "SELECT * FROM courseswork_6156.student_preferences where uni = %s";
+        sql = "SELECT * FROM courseswork_6156.student_preferences where uni = %s LIMIT %s OFFSET %s";
         conn = CourseResource._get_connection()
+        uni = uni.strip()
         cur = conn.cursor()
-        key = uni
-        res = cur.execute(sql, args=key)
+        limit, offset = LIMIT, OFFSET
+        res = cur.execute(sql, args=(uni, limit, offset))
         records = cur.fetchall()
         # result = cur.fetchone()
         return records

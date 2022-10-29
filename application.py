@@ -20,9 +20,9 @@ def get_all_courses():
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
     return rsp
 
-@app.route("/course/<course_id>/", methods=["GET"])
-def get_course_by_id(course_id):
-    result = CourseResource.get_course_id(course_id)
+@app.route("/course/<course_name>/", methods=["GET"])
+def get_course_by_name(course_name):
+    result = CourseResource.get_course_name(course_name)
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
     else:
@@ -31,24 +31,23 @@ def get_course_by_id(course_id):
 
 @app.route("/course/add/course_name=<course_name>&department=<department>&introduction=<introduction>",
            methods=["POST", "GET"])
-def insert_courses(course_name, department, introduction = 'NA'):
-    print(course_name, department, introduction)
+def insert_courses(course_name, department, introduction):
     result = CourseResource.add_course(course_name, department, introduction)
     if result:
         rsp = Response("COURSE CREATED", status=200, content_type="text/plain")
     else:
-        rsp = Response("CREATION FAILED", status=404, content_type="text/plain")
+        rsp = Response("There already exist one course", status=404, content_type="text/plain")
     return rsp
 
 
 @app.route("/course/student_preference/add/uni=<uni>&course_id=<course_id>&timezone=<timezone>&dept=<dept>&message=<message>",
            methods=["POST", "GET"])
 def add_course_preference(uni, course_id, timezone = 'NA', dept = 'NA', message = 'NA'):
-    result = CourseResource.add_student_preference(uni, course_id, timezone, dept, message)
+    result, message = CourseResource.add_student_preference(uni, course_id, timezone, dept, message)
     if result:
         rsp = Response("Course Preferences CREATED", status=200, content_type="text/plain")
     else:
-        rsp = Response("CREATION FAILED", status=404, content_type="text/plain")
+        rsp = Response(message, status=404, content_type="text/plain")
     return rsp
 
 @app.route("/course/student_preference/edit/uni=<uni>&course_id=<course_id>&timezone=<timezone>&dept=<dept>&message=<message>",
@@ -58,7 +57,7 @@ def edit_course_preference(uni, course_id, timezone = 'NA', dept = 'NA', message
     if result:
         rsp = Response("Course Preferences CREATED", status=200, content_type="text/plain")
     else:
-        rsp = Response("CREATION FAILED", status=404, content_type="text/plain")
+        rsp = Response("The preference does not exist", status=404, content_type="text/plain")
     return rsp
 
 
@@ -87,8 +86,8 @@ def delete_course_preference_by_id_and_uni(uni, course_id):
     if result:
         rsp = Response("DELETE SUCCESS", status=200, content_type="application.json")
     else:
-        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+        rsp = Response("No existed Preference is found!", status=404, content_type="text/plain")
     return rsp
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5011)
+    app.run(host="127.0.0.1", port=5011)
