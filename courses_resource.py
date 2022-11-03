@@ -3,7 +3,7 @@ import os
 from flask import Flask, request, render_template, g, redirect, Response, session
 
 ###Define default LIMIT and OFFSET
-LIMIT = 50
+LIMIT = 25
 OFFSET = 0
 class CourseResource:
     @classmethod
@@ -39,18 +39,17 @@ class CourseResource:
 
     @staticmethod
     def get_course_name(course_name):
-        sql = "SELECT * FROM courseswork_6156.Courses where Course_Name=%s LIMIT %s OFFSET %s";
+        sql = "SELECT * FROM courseswork_6156.Courses where Course_Name=%s LIMIT %s";
         course_name = course_name.strip()
         conn = CourseResource._get_connection()
         cur = conn.cursor()
-        limit, offset = LIMIT, OFFSET
-        res = cur.execute(sql, args = (course_name, limit, offset))
+        res = cur.execute(sql, args = (course_name, LIMIT))
         records = cur.fetchall()
         #result = cur.fetchone()
         return records
 
     @staticmethod
-    def add_course(course_name, department, introduction = "NA"):
+    def add_course(course_name, department, introduction):
         if not (course_name and department):
             return False
         course_name, department = course_name.strip(), department.strip()
@@ -126,16 +125,19 @@ class CourseResource:
 
 
     @staticmethod
-    def get_course_preference_by_uni(uni):
-        sql = "SELECT * FROM courseswork_6156.student_preferences where uni = %s LIMIT %s OFFSET %s";
+    def get_course_preference_by_uni(uni, limit, offset):
+        sql1 = "SELECT * FROM courseswork_6156.student_preferences where uni = %s";
+        sql2 = "SELECT * FROM courseswork_6156.student_preferences where uni = %s LIMIT %s OFFSET %s";
         conn = CourseResource._get_connection()
         uni = uni.strip()
         cur = conn.cursor()
-        limit, offset = LIMIT, OFFSET
-        res = cur.execute(sql, args=(uni, limit, offset))
+        res = cur.execute(sql1, args=(uni))
+        records = cur.fetchall()
+        length = len(records)
+        res = cur.execute(sql2, args=(uni, int(limit), int(offset)))
         records = cur.fetchall()
         # result = cur.fetchone()
-        return records
+        return length, records
 
 
     @staticmethod

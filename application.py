@@ -20,7 +20,7 @@ def get_all_courses():
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
     return rsp
 
-@app.route("/course/<course_name>/", methods=["GET"])
+@app.route("/course/<course_name>", methods=["GET"])
 def get_course_by_name(course_name):
     result = CourseResource.get_course_name(course_name)
     if result:
@@ -61,18 +61,9 @@ def edit_course_preference(uni, course_id, timezone = 'NA', dept = 'NA', message
     return rsp
 
 
-@app.route("/course/student_preference/<course_id>/<uni>", methods=["GET"])
-def get_course_preference_by_id_and_uni(course_id, uni):
-    result = CourseResource.get_course_preference_by_id_and_uni(course_id, uni)
-    if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
-    else:
-        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
-    return rsp
-
-@app.route("/course/student_preference/<uni>", methods=["GET"])
-def get_course_preference_by_uni(uni):
-    result = CourseResource.get_course_preference_by_uni(uni)
+@app.route("/course/student_preference/<uni>/limit=<limit>&offset=<offset>", methods=["GET"])
+def get_course_preference_by_uni(uni, limit, offset):
+    result = CourseResource.get_course_preference_by_uni(uni, limit, offset)
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
     else:
