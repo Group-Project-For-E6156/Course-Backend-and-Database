@@ -28,16 +28,6 @@ class CourseResource:
         return conn
 
     @staticmethod
-    def get_all_courses():
-        sql = "SELECT * FROM courseswork_6156.courses";
-        conn = CourseResource._get_connection()
-        cur = conn.cursor()
-        res = cur.execute(sql)
-        records = cur.fetchall()
-        #result = cur.fetchone()
-        return records
-
-    @staticmethod
     def get_course_name(course_name):
         sql = "SELECT * FROM courseswork_6156.Courses where Course_Name=%s LIMIT %s";
         course_name = course_name.strip()
