@@ -15,9 +15,9 @@ class CourseResource:
         #user = "admin"
         #password = "han990219"
         #h = 'e5156-database-1.coxz1yzswsen.us-east-1.rds.amazonaws.com'
-        user = "root"
-        password = "han990219"
-        h = "localhost"
+        user = "admin"
+        password = "1234567890"
+        h = "e6156.coxz1yzswsen.us-east-1.rds.amazonaws.com"
         conn = pymysql.connect(
             user = user,
             password = password,
@@ -26,6 +26,15 @@ class CourseResource:
             autocommit=True
         )
         return conn
+
+    @staticmethod
+    def get_courses():
+        sql = "SELECT * FROM courseswork_6156.Courses"
+        conn = CourseResource._get_connection()
+        cur = conn.cursor()
+        res = cur.execute(sql)
+        records = cur.fetchall()
+        return records
 
     @staticmethod
     def get_course_name(course_name):
@@ -128,6 +137,17 @@ class CourseResource:
         records = cur.fetchall()
         # result = cur.fetchone()
         return length, records
+
+
+    @staticmethod
+    def get_all_preference(uni):
+        sql1 = "SELECT * FROM courseswork_6156.student_preferences where uni = %s";
+        conn = CourseResource._get_connection()
+        uni = uni.strip()
+        cur = conn.cursor()
+        res = cur.execute(sql1, args=(uni))
+        records = cur.fetchall()
+        return records
 
 
     @staticmethod
