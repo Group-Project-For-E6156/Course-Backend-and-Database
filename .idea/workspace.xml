@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3581ea93-10c9-46b2-a769-3c01b9b10d7e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Coursework_6156.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Coursework_6156.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/application.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/courses_resource.py" beforeDir="false" afterPath="$PROJECT_DIR$/courses_resource.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Create_login.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Create_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Create_tables_team.sql" beforeDir="false" />
     </list>
     <disabled>
       <disabled_changelists>
@@ -29,7 +30,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Students-Login-BE" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager" selected="Python.application">
