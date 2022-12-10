@@ -144,5 +144,4 @@ def delete_course_preference_by_id_and_uni():
         rsp = Response("No existed Preference is found!", status=404, content_type="text/plain")
     return rsp
 
-if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5011)
+app.run(host="0.0.0.0", port=5011)
