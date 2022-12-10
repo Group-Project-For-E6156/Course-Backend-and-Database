@@ -14,6 +14,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'longer-secret-is-better'
 CORS(app)
 
+@app.route("/", methods = ['GET'])
+def init():
+    return "hello world"
 
 @app.route("/courses/", methods=["GET"])
 def get_courses():

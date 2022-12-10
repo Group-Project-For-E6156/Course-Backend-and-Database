@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3581ea93-10c9-46b2-a769-3c01b9b10d7e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Create_login.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Create_tables.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Create_tables_team.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/application.py" afterDir="false" />
     </list>
     <disabled>
       <disabled_changelists>
